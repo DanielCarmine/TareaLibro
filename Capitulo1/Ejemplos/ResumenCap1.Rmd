@@ -1,0 +1,130 @@
+---
+title: "Resumen Capitulo 1"
+author: "Daniel Villatoro"
+date: "23/1/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+#Motivaciones para analizar datos:
+
+
+#Analisis exploratorio
+
+EDA o analisis exploratorio de datos puede ser definido como el arte de mirar a uno o mas datasets en un esfuerzo para entender la subyacente estructura de datos contenida, esta es una usal descripcion de como podria ir acerca de lo que ofrecespor Diaconis:
+
+Nosotros miramos los numeros o graficos e intentamos encontrar patrones, Nosotros perseguimos pistas sugestivas por un antecedente de informacion, imaginacion patrones percividos t experiencia con otros analisis de datos.
+
+Los datasets pueden contener datos no numericos, nuestro analisis puede estar basado en caracteristicas numericas computadas desde los valores no numericos, las variables pueden tener varios niveles y mas retos problematicosy eso puede venir en dos variedades una es representar las variables como el codigo postal de Estados unidos cual identifica geograficamente las localizaciones , el segundo tipo de varios niveles categoricos describe la inerente structura de la variable que puede ser mostrada para un desarollo especializado en las tecnicas de analisis.
+
+La mension de graficos es particularmente importante desde que los humanos hacen mejor el ver patrines en los graficos, un grafico es una larga coleccion de numeros, es por eso que R soporta una gran cantidad de diferentes graficos , metodos mostrados(scatterplots, barplots,boxplotsm quantile-quantile,plots,histograms,mosaics plots y mucho mas).Primero las tecnicas graficas son muy utiles para el analisis de datos, ya que encontramos importantes estructuras en los dataset que no son necesarios al explicar todas esas ecuentos con otros.Por ejemplo una largo array de dos variables en un grafico de dispersion podria ser una herramienta util para mostrar anomalias o variables en dato subytacente, pero serua extremadamente pobre para presentar resultados de otros por que esencialmente reequiere, que el observador repita el analisis por ellos mismos.
+
+El segundo punto  es la utilidad de cualquier grafico mostrado, puede depender fuertemente o exactamente, esta caracteristica depende de dos componentes, la mecanica de como un subset de datos puede ser mostrado y la eleccion de como ira adentro de ese subset de datos, Especificamente eso es importante, el segundo aspecto ya que es importante tener en cuenta de donde podrian venir los datos y quiza no podrian ser muy utiles para el analisis
+
+El analisis exploratorio hace mas extensivo el uso de herramientas graficas
+
+El analisis exoloratorio ofrece caracterizacuibes de naberas diferentes de klas variables y/o las fuentes de los datos y compara esas caracterizaciones
+
+El analisis exploratorio son aspectos extremadamente importantes es la busqueda de lo inusual las anomalias que aparezcan en el dataset.
+
+La cadena del analisis de software es Adquirir ---> Analizar ---> Explicar
+
+
+
+```{r cars}
+   head(mtcars)
+```
+
+#Graficos
+
+```{r pressure, echo=FALSE}
+library(MASS)
+library(car)
+par(mfrow=c(2,2))
+truehist(mammals$brain)
+truehist(log(mammals$brain))
+qqPlot(mammals$brain)
+title("Normal QQ-plot")
+qqPlot(log(mammals$brain))
+title("Normal QQ-plot")
+```
+
+
+#Una representativa sesion en R
+
+En un analisis de una sesion de R se realiza las siguentes preguntas
+
+
+1.Cuantos records tiene el dataset contenido?
+2.Cuantos campos o variables son incluidas en cada record"
+3.Que tipos de variables son(numeros reales, integers, variables categoricas como ciudad, tipo o calgo por el estilo)
+4.Todas esas variables pueden ser siempre observadas?
+5.Todas esas variables incluidas en el dataset las unicas que es lo que se espera?
+6.Esas variables en los dataset estan exibiendo el tipo de relacion que nosotros esperamos?
+
+El Sr. Derek Whiteside de la Estación de Investigación de Construcción del Reino Unido registró el consumo semanal de gas y la temperatura externa promedio en su propia casa en el sureste de Inglaterra durante dos temporadas de calefacción, una de 26 semanas antes, y una de las 30 semanas después de que se aisló la pared de la cavidad instalada. El objetivo del ejercicio fue evaluar el efecto de la aislamiento en el consumo de gas.
+
+Apartir de el dataset llamado whiteside que corresponde al consumo de gas se puede realizar una graficacion con la funcionplot, un antes y un despues obteniendose dos referencias lineales.Las dos referencias lineales encajan, en un modela para cada uno de los datos del subset definido por dos valores alternativamente podemos obtener los mismos resultados calzando una regresion lnear de un modelo de dataset, usando temp and insul como variables predictorias.  
+
+
+Cuantos records tiene el dataset contenido?
+Cuantos campos o variables son incluidas en cada record"
+Que tipos de variables son(numeros reales, integers, variables categoricas como ciudad, tipo o calgo por el estilo)
+
+Todas esas variables pueden ser siempre observadas?
+Todas esas variables incluidas en el dataset las unicas que es lo que se espera?
+Esas variables en los dataset estan exibiendo el tipo de relacion que nosotros esperamos?
+
+
+```{r MASS}
+   head(whiteside)
+```
+
+
+```{r}
+   str(whiteside)
+```
+
+
+```{r}
+  x <- as.character(whiteside$Insul)
+  str(x)
+```
+
+```{r}
+summary(whiteside)
+```
+
+```{r}
+boxplot(Gas ~ Insul, data = whiteside)
+```
+
+```{r}
+plot(whiteside$Temp, whiteside$Gas, pch=c(6,16)[whiteside$Insul])
+```
+
+```{r}
+plot(whiteside$Temp, whiteside$Gas, pch=c(6,16)[whiteside$Insul])
+legend(x="topright",legend=c("Insul = Before","Insul = After"), pch=c(6,16))
+```
+
+```{r}
+plot(whiteside$Temp, whiteside$Gas, pch=c(6,16)[whiteside$Insul])
+legend(x="topright",legend=c("Insul = Before","Insul = After"), pch=c(6,16))
+Model1 <- lm(Gas ~ Temp, data = whiteside, subset = which(Insul == "Before"))
+Model2 <- lm(Gas ~ Temp, data = whiteside, subset = which(Insul == "After"))
+abline(Model1, lty=2)
+abline(Model2)
+```
+
+
+
+
+

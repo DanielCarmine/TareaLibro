@@ -1,0 +1,5 @@
+library(MASS)
+library(car)
+str(cabbages)
+qqPlot(cabbages$HeadWt)
+qqPlot(cabbages$VitC)

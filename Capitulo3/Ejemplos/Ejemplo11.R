@@ -1,0 +1,1 @@
+qqPlot(wts12, xlab="Chick weight at 12 days")

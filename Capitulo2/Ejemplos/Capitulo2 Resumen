@@ -1,0 +1,189 @@
+Capitulo 2 Resumen
+
+Exploratorio vs Gráficos planetarios
+
+Ambos exploratorio y gráficos exploratorios son relevantes aquí cuando tu necesitas tener un sentido de que es lo que esta dentro de tu data ser traduce esto, en un medio visual que puede ayudar rápidamente a identificar estas características incluyendo curvas lineas tendencias y anomalías.
+
+La segunda observación concierne al nivel de dalles que son apropiados para el análisis exploratorio:
+Exploración es en general lo mejor hecho en un alto nivel de singularidad donde existe demasiado ruido en los datos pero si tu los sobresimplificas en lineas ecternas con demasiada informacion podrias terminar con la perdida de informacion importante
+
+En contraste el proposito explaneatorio es lo que conlleva a la conclusion del analusta acerca de que hay dentro de los otros datos, consecuentemente es importante las vizualizaciones explaneatorias para remover o minimizar datos detallados, que podria obscurecer el mensaje.
+
+
+Los siguientes ejemplos muestran las diferencias entre exploratorio y explanatorio vizualizaciones, ambos estan basados en el UScereal data frame from MASS package, el cual describe 65 desayunos a nase de cereales disponiblesen venta en estados unidos, basado en la esta informacion tomada del paquete requerido por la FDA.
+
+plot(UScereal, las = 2)
+
+con este comando se muestra un conjunto de arrays Los elementos diagonales de esta matriz enumeran el nombre de la variable que aparece en el eje x de todas las gráficas en esa columna y el eje y de todas las gráficas en esa fila.
+Como hay 11 variables en este marco de datos, el resultado es una matriz de 110 campos, haciendo que el resultado sea visualmente desalentador a primera vista. Además, porque hay muchos campos incluidos en esta matriz, cada una es tan pequeña que es imposible ver, muchos detalles en cualquier campo individual. Sin embargo, esta matriz representa un útil herramienta para la exploración de datos preliminares porque nos permite escanear rápidamente trazados para ver si parece existir alguna relación fuerte entre alguna de las pares de variables Aquí, parece haber fuertes relaciones entre grasas y calorías (fila 2, columna 4 o viceversa: fila 4, columna 2), entre carbohidratos y calorías (fila 2, columna 7 y viceversa), y entre potasio y fibra (fila 6, columna 10 y viceversa). Además, esta pantalla deja en claro que ciertas variables, por ejemplo, anaquel y vitaminas, exhiben solo unos pocos valores distintos.Si bien esta información se puede obtener utilizando una combinación de otras pantallas, y / o herramientas no gráficas en R, esta matriz de trazado rápida y simple proporciona mucha información preliminar útil si la miramos con suficiente cuidado. Ese dicho, esta matriz de trama no es una buena visualización explicativa porque contienedemasiados detalles extraños para cualquier historia que deseemos contar sobre cualquier par variable individual.
+
+Gráficos en el sistema de R
+
+El sistema mas simple en R es la base grafica y es usada para crear la mayoria de gráficos mostrados.
+
+Funcion        Tipo                 Grafica Generada
+-----------------------------------------------------------------------
+plot           Many                          Depende del tipo de objeto
+barplot        Numeric                       Grafico de Barra
+boxplot        Formula, numeric, or list     Caja grafica sumario
+hist           Numeric                       Histograma
+sunflowerplot  Numeric + Numeric             Grafica de girasol
+mosaicplot     Formula or table              Grafica de mosaico
+symbols        Multiple numeric              Grafico de burbuja 
+
+
+Base grafica
+
+En la anterior lista se enumera algunas de las funciones gráficas básicas más comunes, junto con los tipos de objetos R que pueden aceptar como argumentos de datos de trazado y los tipos de trama que generan. Como se señaló, la función de trazado básica enumerada allí es genérica, aceptar muchos tipos diferentes de objetos R y generar muchos tipos diferentes de campos como resultado.
+
+Gráficos de cuadricula 
+
+El paquete de cuadrícula proporciona un conjunto separado de herramientas básicas.proporciona funciones para dibujar trazados completos, por lo que no se usa con frecuencia directamente para producir gráficos estadísticos. Es más común usar uno de
+los paquetes de gráficos que se construyen sobre la cuadrícula, especialmente el lattice packages o el ggplot2 package
+Para construir una pantalla gráfica usando el paquete de cuadrícula, los paso basicos son:
+
+• crear una ventana gráfica;
+• poner una colección de objetos gráficos en la ventana gráfica;
+• renderizar la ventana gráfica para obtener una visualización gráfica.
+
+Finalmente, es importante tener en cuenta otros dos puntos. Primero, una fuente potencial de confusión es la existencia de la función de cuadrícula, que es parte de los gráficos base sistema y no relacionado con el paquete de cuadrícula. La cuadrícula de funciones gráficas base agrega una cuadrícula rectangular a una trama gráfica de base existente; referirse a los resultados
+de ayuda (cuadrícula) para más detalles. El segundo punto importante es que Murrell tiene también desarrolló el paquete gridBase que permite gráficos tanto de cuadrícula como de base para ser usados ​​juntos. Para una introducción a lo que es posible y algunos preliminares.
+
+Lattice Gráficos
+
+proporciona una implementación alternativa de muchas de las funciones de trazado opciones estandar disponibles en gráficos básicos, incluidos diagramas de dispersión, gráficos de barras, diagramas de caja, his-togramas y gráficos QQ. Dos de las principales ventajas de este paquete sobre la base de los gráficos son, en primer lugar, que muchos prefieren las opciones predeterminadas de la red (por ejemplo, colores, puntos, formas, espacios y etiquetas) sobre los valores predeterminados de base correspondientes.
+Y, en segundo lugar, que los gráficos de red proporcionan implementaciones simples de ciertos características adicionales. 
+
+library(lattice)
+xyplot(MPG.city ~ Horsepower | Cylinders, data = Cars93)
+
+Una ventaja del sistema de gráficos de lattice es que puede producir tramas extremadamente sofisticadas a partir de expresiones relativamente simples, especialmente con su función de acondicionamiento multipanel. Sin embargo, el costo de esto es que la tarea de agregar anotaciones simples a un diagrama reticular,como agregar líneas o texto adicionales, es más complejo en comparación con el misma tarea en gráficos tradicionales.
+ 
+ggplot2 package
+
+ggplot2 está basado sobre la gramática de los gráficos, un enfoque sistemático para construir gráficos, muchas de las opciones predeterminadas para los gráficos generados por ggplot2 se basan en investigación, en percepción humana y, por lo tanto, son preferidos por muchos a la base valores predeterminados de gráficos, también como los gráficos de lattice, ggplot2 proporciona mejores soporte para campos de acondicionamiento multipanel, y porque este paquete es altamente extensible y se ha vuelto extremadamente popular, hay muchas extensiones disponibles en forma de otros paquetes R que proporcionan capacidades adicionales significativas más allá del paquete ggplot2 en sí. Al igual que con los gráficos de lattice, sin embargo, un precio pagado por esta flexibilidad adicional es una curva de aprendizaje más pronunciada; otro es la mayor complejidad de generar múltiples matrices de trama, lo que requiere explícitamente trabajando con ventanas gráficas en cuadrícula
+
+La fubcion plot
+
+Probablemente la función de gráficos base más utilizada es plot, que es una función genérica, lo que significa que la naturaleza de el trazo que genera depende sobre el tipo de objeto R que le pasamos. En el caso de la función de trazado genérico, esto
+significa que un comando como "plot (x, y)" puede generar un diagrama de dispersión si x e y son numéricos, un resumen de diagrama de caja si x es categórico e y es numérico, o un diagrama de mosaico si ambas variables son factores.
+
+
+La flexibilidad de la función plot
+
+La flexibilidad de la función de trazado se ilustra en la sesión de muestra R presentado en el Capítulo 1, donde se mostraron los resultados para esta función aplicada a un marco de datos completo, un vector numérico, un factor y un par de variables numéricas:
+la misma función devolvió una matriz de diagramas de dispersión, una gráfica de la numérica valores en su orden de aparición, un gráfico de barras y un diagrama de dispersión. Adicionalmente, esta sesión R de muestra comenzó utilizando la función boxplot para generar un diagrama de caja resumen del consumo de gas de calefacción antes y después de la instalación; 
+
+Puede sewr generado usando esta funcion:
+
+plot(whiteside$Insul, whiteside$Gas)
+library(rpart)
+rpartModel <- rpart(Gas ~ ., data = whiteside)
+plot(rpartModel)
+text(rpartModel)
+
+Realmente, la función de trazado solo muestra la estructura de árbol del modelo, sin etiquetas; para obtener las etiquetas, también debemos usar texto, otra función genérica con un Método para objetos rpart:
+plot(rpartModel)
+text(rpartModel)
+El segundo ejemplo basado en el modelo se muestra en la Fig. 2.5 y pertenece a la clase de modelos MOB, Al igual que el modelo rpart solo descrito, este modelo tiene una estructura basada en árboles, pero en lugar de generar un solo valor numérico pronosticado para cada nodo terminal del árbol (es decir, cada "Hoja"), cada nodo terminal contiene un modelo de regresión lineal que genera prediciones desde otras covariables, esos modelos podian calzar usando lmtree para partykit package unsando algo similar en el codigo generado usado a partir del modelo rpart.
+
+library(partykit)
+MOBmodel <- lmtree(Gas ~ Temp | Insul, data = whiteside)
+
+
+El objeto modelo resultante, MOBmodel, es un objeto S3 de la clase "lmtree" y cuando la función de trazado se aplica a este objeto, obtenemos el resultado que se muestra. 
+
+En este caso, el modelo se crea utilizando una estructura de fórmula de tres partes:
+
+#La variable Gas aparece a la izquierda del símbolo ~ para indicar que es la respuesta de la variable a predecir; 
+#La variable Temp aparece entre este símbolo y el | símbolo para indicar que es la covariable utilizada para predecir 
+#La variable de respuesta en los modelos que aparecen en los nodos terminales del árbol
+#La variableInsul que aparece a la derecha de la | El símbolo es la variable de partición utilizada para construir el árbol, como esta variable de partición es binaria en este ejemplo, el árbol resultante tiene dos nodos, uno correspondiente a los datos "Antes" y el otro correspondiente a los datos "Después". 
+
+La estructura de este modelo es clara: todos los registros se asignan a uno de estos nodos, y un registro separado.El modelo de regresión lineal que predice Gas de Temp se construye para cada nodo, en casos favorables, como este, la clase de modelo MOB puede ser extremadamente efectiva en encontrar y explotar una fuerte heterogeneidad en los datos subyacentes. 
+
+
+S3 Clases y funciones genericas
+
+Para cualquier sistema orientado a objetos son los conceptos de clase y método. Una clase define el comportamiento de los objetos describiendo sus atributos y su relación con otras clases. La clase también es utilizado al seleccionar métodos, funciones que se comportan de manera diferente pendiente de la clase de su entrada. Las clases generalmente se organizan en una jerarquía: si no existe un método para un niño, entonces el padre en su lugar se usa el método; el niño hereda el comportamiento del padre.
+
+El nuevo sistema orientado a objetos en R (clases de referencia) tiene esta estructura más tradicional, lo que lo hace muy diferente del sistema S3 Echado a un lado aquí. El sistema S4 también es significativamente diferente del sistema S3:
+los métodos aún pertenecen a funciones genéricas, pero la estructura es más formal; En los sistemas de gráficos lattice y ggplot2, el sistema S4 tiene una mayor flexibilidad pero una curva de aprendizaje correspondientemente más pronunciada. 
+
+Ejemplo
+
+class(rpartModel)
+## [1] "rpart"
+text
+##
+##
+##
+##
+function (x, ...)
+UseMethod("text")
+<bytecode: 0x000000001599f1f8>
+<environment: namespace:graphics>
+
+methods("text")
+## [1] text.default text.formula* text.rpart*
+## see '?methods' for accessing help and source code
+
+methods(class = "rpart")
+## [1] as.party
+labels
+meanvar
+model.frame plot
+## [6] post
+predict
+print
+prune
+residuals
+## [11] summary
+text
+## see '?methods' for accessing help and source code
+
+
+
+Parámetros opcionales para gráficos base
+
+Se observó anteriormente que hay 72 parámetros gráficos básicos opcionales que afecta a muchas de las funciones de trazado de gráficos base. Estos parámetros son establecidos por el función par, que también se puede llamar para devolver una lista con el nombre actual valores para estos parámetros. Los nombres son:
+
+names(par())
+
+
+Varios de estos parámetros vienen en grupos estrechamente relacionados. Uno es el "cex-familia "que especifica en qué medida se deben ampliar el texto y los símbolos en relación con su tamaño predeterminado. Estos parámetros incluyen:
+
+• cex especifica los valores de texto y símbolos de trazado en el siguiente diagrama generado, que sirve como base para todos los demás parámetros en este grupo;
+• cex.axis especifica la escala de las anotaciones del eje, en relación con cex;
+• cex.lab especifica la escala de las etiquetas del eje, en relación con cex
+
+
+La funcion plot
+
+• cex.main especifica la escala del título de la trama principal, en relación con cex;
+• cex.sub especifica la escala del subtítulo de la trama, en relación con cex.
+
+Es importante tener en cuenta que algunas funciones, como los puntos y el texto, permiten el cex parámetro que se especificará en la llamada de función como un vector, lo que permite puntos en la trama para tener diferentes tamaños. Otras dos familias de parámetros estructuradas de manera similar son la "familia col" que especifica colores para puntos, líneas y texto. Esta familia especifica las opciones de fuente para el texto. apareciendo en gráficos, en notaciones de ejes, en etiquetas y en títulos:
+• font especifica uno de los siguientes cuatro tipos de fuente para el texto en el diagrama:
+- font = 1 especifica texto plano;
+- font = 2 especifica la negrita;
+- font = 3 especifica cursiva;
+- font = 4 especifica negrita cursiva.
+• font.axis especifica la fuente que se utilizará para las anotaciones de eje;
+• font.lab especifica la fuente que se utilizará para las etiquetas de eje;
+• font.main especifica la fuente que se utilizará para el título de la trama principal;
+• font.sub especifica la fuente que se utilizará para el subtítulo de la trama.
+
+El parámetro ask es un indicador lógico (el valor predeterminado es FALSE) que especifica si el sistema de gráficos debe detener y solicitar al usuario una respuesta antes de mostrar el siguiente grafico. Esta opción es útil si queremos ver una secuencia de gráficos individuales, por ejemplo, si creamos un bucle que genera un número de diagramas de dispersión entre diferentes variables y queremos tener tiempo para mira cada uno antes de pasar al siguiente. Esta opción se establece comúnmente por los ejemplos de R integrados que muestran muchas campos, y es importante ser consciente de este uso porque la opción de preguntar no siempre se restablece correctamente después de estos.
+Para restablecer el sistema de gráficos para mostrar graficar resultados inmediatamente, entonces es necesario ejecutar el siguiente código:
+
+par(ask = FALSE)
+
+Los siguientes temas se trata de  la edicion de tablas apartir de datsets, y como el acomodo de las variables, los puntos de regrecion, la crecion de tablas, el agregar detalles a las graficas, como descripciones, el formato de texto, el tipo de graficos que pueden ser de barras en forma de pay, y el color de fuentes y graficos que pueden ser mostrados graficamente dandole un entorno personalizado al momento de graficar y analizar los datasets 
+
+
+
+
+ 
+
+

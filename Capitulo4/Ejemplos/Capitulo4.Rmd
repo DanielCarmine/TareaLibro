@@ -1,0 +1,285 @@
+---
+title: "Capitulo 4"
+author: "Daniel Villatoro"
+date: "23/1/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Trabajando con datos externos
+
+Uno de los grandes ayudas de aprender R es construir varios ejemplos de datos, internet representa un invremento importante de fuentes para datasets largos, y ofrecen una corta pero util introduccion, a algunas maneras de como podemos obtener en internet los datos, en internet y meterlos a una sesion de R.
+
+Uno de los mas populares y convenientes  formatos de datos son los CVS esos archivos son facilmente confundidos con hojas de dispersion, los cuales no son de todo, 
+
+
+Uno de los formatos de archivo de datos más populares y convenientes es el archivo de valores separados por comas (CSV), estos archivos se confunden fácilmente con hojas de cálculo, que no son lo mismo y requieren diferentes utilidades para acceder; estas utilidades son
+fácilmente disponibles, pero es importante reconocer que no son los mismos que los necesarios para leer y escribir archivos CSV.
+
+Existen muchos otros tipos de archivos y, aunque este libro no intenta considerarlos a todos, algunos otros tipos de archivos clave y sus usos principales, incluidos los archivos de texto simples, un formato especial para guardar y recuperar objetos R arbitrarios (archivos RDS), y algunos de los formatos de archivos gráficos más populares utilizados para guardar la salida gráfica para su uso por otros programas (por ejemplo, para preparar documentos o presentaciones de diapositivas). Una cuestión práctica importante que surge con frecuencia es la necesidad de fusionar datos
+
+ 
+#Manejo de Archivos en R
+Por default todas estas funciones usadas para leer datos de manera externa dentro de nuestra sesion interactiva de R asume que esos archivos existen dentro de un directorio de trabajo y la funcion getwd() se utiliza para identificar dicho directorio, esta funcion regresa un texto string de esos identificadores en el directorio donde R podria apuntar a esos archivos para leer las funciones como read.csv o readLInes, es importante que la nota de los directorios donde esta arraigados en una estructura jerarquica y de los diferentes niveles son especificados en el nombre del directorio
+
+getwd()
+
+setwd("C:/NewDirectory")
+
+La funcion list.files cuando es llamada sin parametros regresa una lista de todos los archivos contenidos en el directorio de  trabajo, y posiblemente la lista de archivos con directorios alternativos, usando la opcion path para especificar el directorio designado o la lista de solo esos archivos que contienen caracteres strings con sus nombres por via pattern option
+
+list.files(path = "C:/Users/Ron/Documents/IntroRbook/ExploringDataCode",pattern = "Three")
+
+Aqui el path especifica los directorios alternativos que buscaremos, ,iemtras que pattern especifica que solo esos archivos con nombres contenidos con el string Three son regresados.
+
+list.files("../ExploringDataCode", pattern = "Three")
+
+La funcion file.info nos permite aprender detalles mas alla de los archivos esto es el nombre, incluyendo el tamaño, si se encuentra en el directorio o no si es ejecutable o no si es un archivo con permisos de leer y escribir y cuando fue creado  o modificado
+
+file.info("../ExploringDataCode/ThreeSigma.R")
+
+Nosotros podemos crear y editar archivos usando las funciones file.create y file.edit, por que esas funciones son muy utiles para crear y ediatr en R algunos archivos de programa, finalmente los archivos pueden ser renombrados copiados o borrados con las funciones file.rename,file.copy y file.remove.
+
+#Entrada Manual de datos
+
+La entrada manual de datos es tediosa y propenssa a errores esto debe ser evitado de cualquier manera ya que es facil caprurar mal los numeros o caracteres, escribir campos incorrectos o brincarse entradas enteras.
+
+#Entrada Manual de datos es mala pero aveces conveniente
+
+La entrada manual de datos, avceces es necesaria y es una practica alternativa pero en general es una mala practica, por dos razones, la primera y las mas obia es el dataset que es demasiado extenso y el requerir una entrada manual puede ser inseguro, la segunda razon por que tiene a ser un error propenso con errores, esos errores pueden tomar muchas formas y en casos infortunados puedes ser muy dificl detectarlos, estos son unos ejemplos especificos:
+
+Omitir digitos de datos numericos
+
+Transponer digitos en datos numericos
+
+Omitir o transponer cracteres de  strings con caracteres largos
+
+Omitir uno o varios campos de el registro
+
+Capturar entradas correctas de valores en campos erroneos
+
+Brincarse registos
+
+Por ambas razones, es mejor evitar el ingreso manual de datos siempre que sea posible, especialmente si hay más de unos pocos registros involucrados. Por el contrario, dado que alguien ingresa inicialmente muchos datos manualmente al estar incorporado en un archivo o base de datos, también es extremadamente importante examinar los datos cuidadosamente para detectar cualquier error de calidad de datos que pueda estar presente.
+
+#Interactuando con internet
+
+En el otro extremo del espectro de entrada de datos, Internet es una fuente cada vez más importante de grandes volúmenes de datos. En los casos más simples, Internet proporciona enlaces a archivos que contienen los datos que queremos, lo que nos permite obtener datos siguiendo los tres pasos:
+
+Encontrar una pagina web con un data set disponible
+
+Entrar a links apropiados de descarga de datos y en el formato que ocupas
+
+Leer el resultado de el archivo de datos en tu sesion de R.
+
+#Trabajando con archivos CSV
+Uno de los mas convenientes formatos para intercambiar datos entre diferentes softwares de desarrollo es evalor coma separado o archivo CSV el cual esta organizado en filas, y cada fila con un registro  y campo por separado por comas, esta diferente habilidad en el software de desarroll de escritura y lectura de archivos CSV es importante por que muy a menudo los datasets son colectados procesados y analizados por una cadena distinta de personas y organizaciones frecuentemente usado  por diferentes utilidades de software, en casos favorables los archivos CSV pueden ser comunmente un conducto de datos en cada estado de esta cadena, esos archivos pueden tener sus limitaciones.
+
+
+#Leyendo y escribiendo archivos CSV  
+
+En R una manera simple de leer y escribir archivos CSV es usando la funcion read.csv y write.csv respectivamente, se rquiere un parametro para ambas funciones read.csv y write.csv respectivamente, se requieren parametros para ambas funciones y es el nombre del archivo que sera leido desde done se encuentra o escrito, este nombre de archivo debe ser una cadena de caracteres que corresponda, por defecto a un archivo en el directorio de trabajo actual. 
+
+Por el contrario, es posible leer o escribir en archivos en otros directorios incluyendo la designación de ruta completa en el archivo nombre. Para la función read.csv, este nombre de archivo es el único parámetro requerido, aunque la función admite muchos parámetros opcionales. 
+
+La función write.csv requiere dos argumentos: la matriz o el marco de datos contener los datos que se escribirán y una cadena de caracteres que especifica el nombre de el archivo en el que se escribirán los datos. Por defecto, los datos se escriben en
+un archivo CSV en el directorio de trabajo actual, pero los datos se pueden escribir en archivos en otros directorios especificando una ruta completa.
+
+Hojas de calculo y archivos csv no son la misma cosa
+ 
+Si bien es cierto que el paquete de software de Excel puede leer y escribir archivos CSV simples,a continuacion tres caracteristicas que hacen la diferencia:
+
+1. un archivo CSV es el archivo de datos simple descrito anteriormente, que puede leerse Microsoft Excel, junto con muchos otros programas, incluidos R, Python, y Microsoft Access, por nombrar solo algunos;
+
+2. El programa de hoja de cálculo de Microsoft Excel es un paquete de software que puede hacer muchas cosas, incluyendo leer y escribir archivos CSV, realizan cómputos simples presentaciones y análisis de datos.
+
+3. Un archivo de datos de Microsoft Excel contiene los datos sobre los cuales la hoja de cálculo se basa, junto con mucha información adicional, que incluye formato de visualización, el código requerido para cálculos internos, etc.
+
+En entornos de software como R o Python, la principal diferencia práctica es entre un archivo CSV y un archivo de datos de hoja de cálculo es que las utilidades simples como la función read.csv, puede funcionar con archivos CSV, pero no con archivos de datos de Microsoft Excel u otros archivos de datos de hoja de cálculo, que son organizados de manera diferente 
+
+
+#Problemas potenciales con los archivos CSV
+
+Los archivos CSV no están exentos de dificultades, primero, la posibilidad que la función read.csv puede cambiar los nombres de las variables, y segundo problema que puede surgir al leer archivos CSV que contienen cadenas de caracteres con comas incrustadas
+
+
+#Trabajando con archivos de texto
+La funcion basica de R para leer archivos er readLines y esa funcion tiene diferentes funciones, la funcion especificamente puede ser usada para leer datos HTML y puede ser usada para examinar los nombres originales de las variables en archivos CSV para detectar la precencias de comas en el archivo.
+
+La funcion nchar nos dice cuantos caracteres tiene el primer registro y el substr nos arroja una parte del regristro en dos componentes, el primero consiste en 1 atravez de 56 y el segundo consiste en los caracteres 57  atravez de los 84 
+
+autoMpgRecords <- readLines("UCIautoMpg.txt")
+x <- autoMpgRecords[1]
+nchar(x)
+## [1] 84
+substr(x, 1, 56)
+## [1] "18.0
+8
+307.0
+130.0
+3504.
+12.0
+70
+1"
+substr(x, 57, 84)
+
+
+El simbolo \t al principio de la segunda parte del regustro es un caracter tab y aqui divide en dos partes el registro el de la izquierda es es una secuencua de ocho numeros y el segundo representa  los nombres de los vehiculos especificos, los nombres de todas esas variables estan
+disponibles dentro del UCI machine learning Repository.
+
+Retornando a la estructura de los datos estas fuentes de datos pueden ser arreglados con un formato de archivo usando la funcion read.fwf.
+La secuencia básica de pasos necesarios es la siguiente. Primero, tenga en cuenta que cada vector de caracteres devuelto por la función readLines que se muestra arriba incluye dos comillas internas, representadas como \ ", y el primer paso en el reformateo de este proceso es la elimiinacion de las comillas internas de cada registro, luego utilizamos gsub de la siguiente manera:
+
+noQuotes <- gsub('\"', '', autoMpgRecords)
+
+Esta funcion remplaza todas las comillas (\") con un caracter vacio borrandolo y dejando espacios en blanco, gsub aplica para este remplazo
+para cada elemento de autoMpgRecords regresando los vectores de noQuotes. Una vez aplicado esto al vector nosotros aplicamos los siguientes pasos por cada elemento
+
+
+1. Divida el elemento en el carácter de tabulación (\ t) usando la función strsplit, dando dos vectores de caracteres, el primero que contiene las ocho variables numéricas y la segunda que contiene los nombres de los autos;
+
+2. Nuevamente usando la función strsplit, divida el primero de estos dos caracteres vectores en cualquier aparición de espacios en blanco, dando un vector de caracteres con ocho elementos, uno para cada variable numérica en el registro de datos.
+
+3. Convierta estos ocho elementos en variables numéricas con as.numeric función;
+
+4. Combine las ocho variables numéricas resultantes y las características del nombre del automóvil, ingrese una cadena en un registro del marco de datos deseado.
+
+
+#Guardando y recuperando objetos en R
+
+En algunos casos, sin embargo, deseamos guardar los detalles completos de un objeto R para poder trabajar con él en una futura sesión de R. Es decir, que cualquier objeto R que creamos en las sesiones interactivas son volátiles y desaparecen cuando finalizamos la sesión, a menos que que hagamos algo para salvarlos, en el caso de un marco de datos esto se logra fácilmente mediante la función write.csv.
+
+En el caso de objetos R más complejos como los modelos predictivos la estructura del objeto no está bien adaptada a la estructura de registro del archivo CSV, por lo que necesitamos una alternativa.
+
+La función saveRDS nos permite guardar cualquier objeto R en un archivo externo con la extensión .rds y, una vez que hayamos hecho esto, podemos restaurar el objeto a una sesión R posterior con la función readRDS. Como un simple ejemplo, supongamos que use la función de modelado lineal lm  para construir un modelo para predecir el millaje de combustible mpg de todas las otras variables en el marco de datos mtcars.
+El siguiente código se ajusta a este modelo, guardándolo como linearModel:
+
+
+El resultado es este los nombres de las listas con los 12 elementos y sus nombres
+names(linearModel)
+[1] "coefficients" "residuals"   "effects"  "rank"
+[5] "fitted.values" "assign"       "qr"     "df.residual"
+[9] "xlevels"        "call"       "terms"   "model"
+
+Esas listas de elementos pueden variar en las diferentes estructuras incluyendo numeros unicos vectores numericos, matrices data frames y otros objetos especificos en R, nosotros podemos guardar esos objetos y perservar toda su estructura con la funcion saveRDS
+
+saveRDS(linearModel, "linearModelExample.rds")
+
+Para recuperar ese objeto podemos usar la funcion readRDS con los convertidores externos especificos, .rds dentro de los objetos R.
+
+recoveredLinearModel <- readRDS("linearModelExample.rds")
+identical(recoveredLinearModel, linearModel)
+## [1] TRUE
+
+Las funciones saveRDS y readRDS son especialmente utiles, en data set extensos los cuales puedan compicar los modelos con grandes conjuntos de datos, produciendo posiblemente modelos complicados que tardan mucho en adaptarse. Es deseable en tales casos para adaptarse a estos modelos una vez y guardarlos.
+
+#Archivos graficos
+
+En una sesión R interactiva, las funciones gráficas como la trama generan resultados que son se nos muestra en una ventana gráfica que se abre la primera vez que solicitamos salida gráfica Una vez que tengamos un resultado, queremos ahorrar para nuestro propios registros (por ejemplo, una visualización exploratoria de datos para documentar lo que hicimos) o para compartir con otros (p. ej., una visualización explicativa de datos que se utilizará para explicar lo que hemos encontrado), es deseable guardar este resultado en un archivo externo.
+
+Una vez más, es importante enfatizar que todo lo que creamos en un la sesión activa de R es volátil y desaparece para siempre cuando finalizamos nuestra sesión, a menos que hagamos algo para guardarlo en nuestro sistema de archivos externo, Los resultados gráficos
+se puede guardar de diferentes maneras, dos de ellos son: archivos PDF y archivos PNG
+
+Los formatos graficos pueden ser divididos en dos grupos, formato de vectores y formatos de tramos
+
+En términos generales, los formatos vectoriales codifican para dibujar la pantalla gráfica, mientras que los formatos ráster describen la pantalla como un conjunto de puntos o píxeles que brindan información (p. ej., valores de intensidad y color) para cada punto en la pantalla.
+
+En general, los formatos vectoriales son superiores para las imágenes que necesitan ser visto en una variedad de escalas, pero los formatos de trama producirán mucho archivos más pequeños si la imagen es muy compleja.
+
+El formato de archivo PDF representa probablemente el más ampliamente disponible y más formato vectorial fácilmente compartido. Los formatos raster populares incluyen archivos JPEG , PNG y archivos TIFF, todos los cuales se pueden usar para guardar archivos gráficos en R.
+
+Los archivos PNG, se describen como "generalmente mejor para gráficos estadísticos" y que son compatibles con
+
+La manera para crear estos dos tipos de archivos gráficos en R son esenciales, y consta de los siguientes pasos:
+
+1. Llame a una función que instruya a nuestra sesión R para desviar la salida de todos los comandos proximos de gráficos a un archivo especificado;
+2. Ejecutar los comandos R requeridos para generar la  grafica que queremos;
+3. Invoque la función dev.off () para dejar de guardar resultados gráficos a el archivo y redirigirlos a la salida de nuestra venntana de graficos interactivos
+
+Especificamente al guardar nuestros graficos a PFD nosotros llamamos por primera ves la funcioin pdf con el nombre de pdf file cuando fue creada despues de crear los archivos PNG, podemos llamar a la funcion png.
+
+#Fusionando datos de diferentes fuentes
+
+Este proceso de fusión de dos fuentes de datos corresponde a la unión de la base de datos, específicamente, uno objetivos principales en una base de datos relacional es la duplicación de datos almacenando valores relacionados juntos en (relativamente) pequeñas tablas (por ejemplo, detalles específicos del cliente como nombres y direcciones) y unirse a resultados contenidos en estas tablas separadas cuando necesitamos una más grande y más completa.
+
+En R, la función de merge se puede usar para fusionar (o unir) dos marcos de datos. Esta función se llama con los nombres de los marcos de datos, y en el más simple casos esto es suficiente: devuelve un marco de datos combinado cuyas filas están definidas por los valores de las variables (es decir, columnas o campos) comunes a ambos marcos de datos originales. Por ejemplo, si ambos marcos de datos contienen columnas etiquetadas.
+
+
+#Bases de datos relacionales, consultas y SQL
+
+Las bases de datos se utilizan ampliamente en negocio para almacenar eficientemente grandes cantidades de datos, son particularmente
+útil en casos donde una representación de "archivo plano" (por ejemplo, un archivo CSV) implicaría muchos registros con los mismos valores para ciertos campos. Por ejemplo, en una base de datos almacenar el historial de transacciones del cliente, si almacenamos el nombre, la dirección del cliente, e información de facturación junto con los detalles de cada transacción individual,los clientes que hayan realizado muchas compras tendrán muchos de estos campos duplicados, y si los clientes habituales son responsables de la mayor parte de nuestro negocio, el grado de duplicación será sustancial. 
+
+Las bases de datos relacionales están diseñadas para superar este problema separando la base de datos en tablas individuales; así,
+por ejemplo, el nombre, la dirección y la información de facturación de cada cliente es almacenado en una tabla con una entrada para cada cliente, que también tiene un cliente ID. La información de compra individual (por ejemplo, artículo, precio, tamaño, color, etc.) puede
+luego se almacenará en una tabla separada, donde un campo es el ID del cliente, mientras este campo único se repite con frecuencia, la información detallada específica de cada cliente no está duplicada, lo que puede ahorrar una gran cantidad de espacio de almacenamiento.
+Otra ventaja de esta organización, donde la información específica del cliente se almacena solo una vez y no muchas veces, es que simplifica enormemente la base de datos se actualiza si esta información cambia.
+
+
+1. La base de datos está diseñada: esto implica decidir qué variables están incluidas
+incluido y cómo están organizados (textos de bases de datos estándar como ese por
+Date dedica considerable atención al diseño de la base de datos [17]);
+2. El diseño de la base de datos se implementa en un entorno de software específico.
+(por ejemplo, Oracle, Teradata, Microsoft SQL Server, Microsoft Access, MySQL,
+PostgreSQL o sqlite3), que implica crear y completar los datos
+tablas, que proporcionan (y normalmente restringen) el acceso a los datos, etc.
+3. Los usuarios ejecutan consultas SQL en la base de datos para extraer los subconjuntos específicos
+de datos que necesitan.
+
+En general, las bases de datos están en un estado constante de flujo, con nuevas entradas que se agregan a las tablas existentes, se agregan nuevas tablas para manejar nuevos tipos de datos, valores que se cambian para reflejar cambios en las fuentes de datos o para corregir errores, etc. Dado que la forma más común en que los usuarios de R interactúan con las bases de datos esto implica tres pasos básicos:
+
+1. Conéctese a la base de datos desde nuestra sesión en R.
+2. Ejecute consultas SQL en la base de datos para recuperar los datos que queremos.
+3. Cierre la conexión de la base de datos.
+
+La mecánica de cómo nos conectamos a una base de datos y nos desconectamos de ella depende en la base de datos específica que estamos utilizando, afortunadamente, el lenguaje SQL está (razonablemente) bien estandarizado, entonces el formato de las consultas SQL que necesitamos ejecutar para recuperar los datos que queremos es (en gran medida) independiente de la base de datos. 
+
+#Una introduccion al sqldf package
+
+El paquete sqldf proporciona soporte para consultas SQL como las que solo discutido contra marcos de datos.
+la primera línea carga el paquete sqldf para que la función sqldf esté disponible para nuestro uso a continuación, se llama a la función sqldf con la consulta SQL que queremos ejecutar y devuelve la tabla definida por esa consulta. 
+
+El paquete sqldf también incluye la función read.csv.sql, que se puede usar para ejecutar consultas SQL en archivos CSV externos.
+Esta capacidad puede ser extremadamente útil en casos en los que queremos extraer un pequeño o subconjunto de datos de tamaño moderado de un enorme archivo CSV, esta función es más frágil que la función read.csv estándar, ya que no puede manejar campos de caracteres con comas incrustadas, pero en casos donde nuestro archivo CSV no presenta este problema, usando read.csv.sql con una consulta SQL adecuada puede ser una solución mucho mejor que intentar leer todo el archivo de datos en la memoria y luego extraer lo que queremos de él.
+
+
+#Un resumen de el soporte de base de datos
+
+El uso principal de las bases de datos es proporcionar un almacenamiento confiable y permanente de grandes
+recopilaciones de datos, organizadas de manera eficiente que evitan innecesarios
+duplicación, reduciendo así los requisitos de almacenamiento total y mejorando la reli
+capacidad de los resultados cuando los valores de datos necesitan ser actualizados. Como corolario,
+luego, las bases de datos representan archivos externos, posiblemente alojados en servidores externos (es decir,
+otras computadoras) a las que accedemos a través de alguna red de comunicación (es decir, una
+intranet compatible con la compañía de computadoras en red o una red externa ac-
+cesado a través de Internet). Para trabajar con una base de datos desde una sesión interactiva de R,
+entonces, los siguientes tres pasos son necesarios:
+1. Conéctese a la base de datos;
+2. Ejecute consultas SQL para realizar las operaciones de base de datos requeridas;
+3. Desconectarse de la base de datos.
+
+
+El paquete DBI proporciona soporte básico para comunicarse con una variedad de bases de datos, que sirven como base para una serie de paquetes R específicos de la base de datos, incluyendo el paquete RSQLite.
+
+Los paquetes DBI son los siguientes:
+1. dbDriver especifica el tipo de base de datos con la que queremos conectarnos (por ejemplo,
+dbDriver ("PostgreSQL") especifica una base de datos PostgreSQL);
+2. dbConnect se conecta con una base de datos específica a través de un controlador de dispositivo
+ayudado por la función dbDriver;
+3. dbGetQuery nos permite enviar consultas SQL a la base de datos y recuperar
+Los resultados;
+4. dbDisconnect termina nuestra conexión con la base de datos.
+
+El paquete RODBC proporciona soporte similar para la reunión de muchas bases de datos,los requisitos del estándar Open Database Connectivity incluyen Microsoft SQL Server, destinado a grandes aplicaciones comerciales, Microsoft Access, ampliamente disponible en computadoras personales, MySQL, PostgreSQL, y bases de datos Oracle, entre muchas otras. 
+
+El paquete RODBC proporciona las mismas capacidades básicas que el paquete DBI, pero para bases de datos compatibles con ODBC,
+y las tres funciones básicas tienen nombres diferentes:
+
+1. odbcConnect se conecta a una base de datos especificada;
+2. sqlQuery envía consultas SQL y devuelve los resultados;
+3. odbcClose finaliza nuestra conexión a la base de datos.

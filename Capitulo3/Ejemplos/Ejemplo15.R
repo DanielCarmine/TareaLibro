@@ -1,0 +1,7 @@
+library(car)
+Tbl <- table(Chile$statusquo, useNA = "ifany")
+range(Tbl)
+table(Tbl)
+median(as.numeric(Tbl))
+mad(as.numeric(Tbl))
+quantile(Tbl)

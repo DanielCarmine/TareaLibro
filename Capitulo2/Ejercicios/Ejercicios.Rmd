@@ -1,0 +1,79 @@
+---
+title: "Ejercicios"
+author: "Daniel Villatoro"
+date: "23/1/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Ejercicios
+
+Ejercicio 1
+```{r}
+library(MASS)
+library(car)
+plot(fgl$Ca ~ fgl$RI, data = fgl,xlab="Ca concentration", ylab="Refractive index",las=0)
+```
+
+Ejercicio 2
+```{r}
+library(MASS)
+library(car)
+boxplot(Mg~type,data=fgl, main="Car Milage Data",
+   xlab="Forensic glass type", ylab="Mg concentration" ,horiz=TRUE) 
+```
+
+Ejercicio 3
+```{r}
+library(MASS)
+library(car)
+plot(fgl$Ca ~ fgl$RI, data = fgl)
+ 
+```
+
+```{r}
+library(MASS)
+library(car)
+
+tipos <- table(fgl$type)
+tipos=sort(tipos)
+barplot(tipos,xlab="Records listing glass type",horiz=TRUE,font.lab=4) 
+```
+
+```{r}
+library(MASS)
+
+par(mfrow=c(2,2))
+plot(fgl$Mg)
+plot(fgl$Ca)
+plot(fgl$K)
+plot(fgl$Ba)
+```
+
+```{r}
+library(MASS)
+par(mfrow=c(1,1))
+x <- UScereal$sugars
+y <- UScereal$calories
+
+plot(x, y, xlab = "GCalories per serving",
+ylab = "Grams of fat per serving", type = "n")
+ 
+```
+
+```{r}
+library(MASS)
+ plot(cabbages$VitC,cabbages$HeadWt,type = 'n')
+ 
+indexC39<-cabbages[cabbages$Cult == "c39",]
+indexC52<-cabbages[cabbages$Cult == "c52",]
+  
+points(indexC39$VitC, indexC39$HeadWt,pch = 6)
+points(indexC52$VitC, indexC52$HeadWt,pch = 17)
+ 
+```

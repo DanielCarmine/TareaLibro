@@ -1,0 +1,16 @@
+> plot(whiteside)
+> plot(whiteside$Temp)
+> plot(whiteside$Insul)
+> plot(whitesude$Temp, whiteside$Gas, pch=c(6,16)[whiteside$Insul])
+Error in plot(whitesude$Temp, whiteside$Gas, pch = c(6, 16)[whiteside$Insul]) : 
+  objeto 'whitesude' no encontrado
+> plot(whiteside$Temp, whiteside$Gas, pch=c(6,16)[whiteside$Insul])
+> legend(x="topright",legend=c("Insul = Before","Insul = After"), pch=c(6,16))
+> plot(whiteside$Temp, whiteside$Gas, pch=c(6,16)[whiteside$Insul])
+> legend(x="topright",legend=c("Insul = Before","Insul = After"), pch=c(6,16))
+> Model1 <- lm(Gas ~ Temp, data = whiteside, subset = which(Insul == "Before"))
+> Model2 <- lm(Gas ~ Temp, data = whiteside, subset = which(Insul == "After"))
+> abline(Model1, lty=2)
+> abline(Model2)
+> 
+

@@ -1,0 +1,98 @@
+---
+title: "Ejercicios"
+author: "Daniel Villatoro"
+date: "23/1/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Ejercicio 1
+
+```{r}
+library(MASS)
+library(robustbase)
+#rownames(mammals)
+#rownames(Animals2)
+#plot(Animals2)
+intersect(mammals, Animals2)
+setdiff(mammals, Animals2)
+#rownames(commonAnimals)
+```
+
+
+Ejercicio 2
+```{r}
+library(MASS)
+library(car)
+library(robustbase)
+
+par(mfrow=c(2,2))
+truehist(Animals2$brain)
+truehist(log(Animals2$brain))
+qqPlot(Animals2$brain)
+title("Normal QQ-plot")
+qqPlot(log(Animals2$brain))
+title("Normal QQ-plot")
+```
+
+Ejercicio 3
+```{r}
+libReturn<-library()
+str(libReturn)
+```
+
+Ejercicio 4
+```{r}
+library(MASS)
+str(cabbages)
+length(which(is.na(cabbages)))
+```
+
+Ejercicio 5
+```{r}
+library(car)
+summary(Chile)
+```
+
+Ejercicio 6
+```{r}
+library(MASS)
+library(car)
+str(cabbages)
+qqPlot(cabbages$HeadWt)
+qqPlot(cabbages$VitC)
+```
+
+Ejercicio 7
+```{r}
+library(MASS)
+library(car)
+summary(whiteside)
+summary(cabbages)
+boxplot( HeadWt ~ Cult, data = cabbages)
+boxplot( VitC ~ Cult , data = cabbages)
+```
+
+Ejercicio 8
+```{r}
+library(MASS)
+library(car)
+#summary(whiteside)
+#summary(cabbages)
+plot(cabbages$VitC, cabbages$HeadWt)
+```
+
+Ejercicio 8
+```{r}
+library(MASS)
+library(car)
+summary(cabbages)
+
+cor(cabbages$HeadWt, cabbages$VitC)
+```
+
