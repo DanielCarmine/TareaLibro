@@ -1,0 +1,46 @@
+---
+title: "Capitulo 6"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Fabricando buenos historiales de datos
+Sea quien sea su audiencia, la historia que está tratando de contar (o la
+la respuesta que intenta compartir) es conocida por usted desde el principio, y por lo tanto, puede diseñar para acomodar y resaltar específicamente esa historia.
+
+La única modificación requerida aquí sería cambiar la frase "seleccionar datos enfocados" en la última oración a "seleccionar datos enfocados y texto de resumen", algunos casos, por ejemplo, los resúmenes ejecutivos discutidos en toda la historia de datos son demasiado cortos para incluir una visualización de datos explicativa, pero una historia de datos típica incluye una o más de estas visualizaciones, junto con suficiente texto explicativo que el lector pueda entender. claramente lo que el autor intenta decir sobre los datos y por qué.
+
+Los elemento deun historial de datos efectivo
+
+
+Esencialmente, una historia de datos efectiva describe brevemente uno o más conjuntos de datos, explica claramente por qué los estamos mirando y resume lo que hemos aprendido al analizarlos. En su libro sobre escritura, W. Ross Winterowd señala que las seis preguntas, “¿Quién? ¿Qué? ¿Dónde? ¿Cuando? ¿Por qué? ¿Cómo?"
+
+Las siguientes variaciones sobre estas preguntas representan un buen comienzo
+punto en la elaboración de una historia de datos efectiva:
+
+1. ¿Quién es nuestro público objetivo? La respuesta a esta pregunta influirá tanto en la longitud como en el contenido de nuestra historia de datos, un punto importante.
+
+2. ¿Qué fuente de datos estamos examinando y qué concluimos de ella? Como estamos describiendo los resultados del análisis de datos, es importante ser conciso pero no ambiguo sobre cuáles son nuestras conclusiones y los datos en los que se basan.
+
+3. ¿De dónde provienen estos datos? Dado que "los mismos" datos pueden provenir de varias fuentes diferentes, es importante al menos proporcionar una referencia a la fuente de los datos en los que se basa nuestra historia.
+
+4. ¿Cuándo se generaron estos datos? Incluso en los casos en que el tiempo no entra explícitamente en nuestro análisis, saber cuándo se recopilaron los valores de los datos puede ser importante (por ejemplo, ¿se recopilaron estas cifras de ventas nacionales antes o después de la Gran Recesión?);
+
+5. ¿Por qué estamos analizando este conjunto de datos? Junto con las preguntas sobre qué fuente de datos estamos analizando y qué concluimos de ella, esta es probablemente la pregunta más importante que debe abordarse en cualquier historia de datos;
+
+6. ¿Cómo llegamos a nuestras conclusiones? Las historias de datos para audiencias no técnicas no deben entrar en gran detalle técnico, pero se deben proporcionar suficientes detalles o referencias a las fuentes de estos detalles para dejar al lector cómodo de que se realice un análisis sistemático.
+```{r}
+library(partykit)
+#mobModel <- lmtree(medv ~ . - rad | rad, data = Boston)
+#print(mobModel)
+```
+
+
+
+
+

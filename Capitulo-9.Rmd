@@ -1,0 +1,226 @@
+---
+title: "Capitulo 9"
+output:
+  pdf_document: default
+ 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Modelos de probabilidad contra datos
+
+Como ejemplo específico, si tenemos una secuencia de observaciones de datos numéricos, podemos calcular fácilmente los valores mínimos y máximos observados, pero no podemos decir qué tan probable sería observar, a partir de un nuevo lote de datos recopilados en condiciones similares, valores menor que el mínimo observado o mayor que el máximo observado. 
+
+Si ajustamos una distribución de probabilidad a nuestros datos, una distribución gaussiana basada en la media y la desviación estándar calculada a partir de los datos, podemos responder a estas preguntas, asumiendo que nuestro modelo de probabilidad es adecuado. 
+
+Como ejemplo específico, recuerde de la discusión en el Capítulo 3 que los valores de peso del pollito de 18 semanas en el marco de datos ChickWeight del paquete de conjuntos de datos R parecían estar bien aproximados por una distribución gaussiana. La desviación mínima, máxima, media y estándar se calculan fácilmente a partir de esta secuencia de datos
+
+```{r}
+wts18 <- ChickWeight$weight[which(ChickWeight$Time == 18)]
+min(wts18)
+max(wts18)
+mean(wts18)
+sd(wts18)
+```
+
+
+
+Distribuciones cuantiles
+
+La base para esta caracterización gráfica de los datos son cinco cuantiles de los datos: el mínimo de la muestra, el cuartil inferior, la mediana, el cuartil superior y el máximo de la muestra. Estos valores se pueden calcular a partir de cualquier secuencia de datos numéricos en R utilizando la función cuantil especificando solo el vector de datos. 
+
+Por lo tanto, para los datos de peso de pollito de 18 semanas del ejemplo anterior, estos valores son:
+
+
+```{r}
+wts18 <- ChickWeight$weight[which(ChickWeight$Time == 18)]
+quantile(wts18)
+quantile(wts18, probs = seq(0, 1, 0.1))
+
+```
+Confidencia de Intervalos y Significancia
+
+La función cuantil Q (x) es esencialmente la inversa de P (z), que nos dice qué
+El valor de z satisface la condición P (z) = x:
+Q (x) = {z tal que P (z) = x}
+
+```{r }
+minWt <- min(wts18)
+maxWt <- max(wts18)
+meanWt <- mean(wts18)
+sdWt <- sd(wts18)
+pMin <- pnorm(q = minWt, mean = meanWt, sd = sdWt)
+pMin
+qnorm(mean = meanWt, sd = sdWt, p = seq(0, 1, 0.1))
+```
+
+R admite muchas distribuciones diferentes, varias de las cuales se analizan brevemente
+más adelante en este capítulo, y para la mayoría de estas distribuciones, este soporte incluye
+las siguientes cuatro funciones:
+1. una función de densidad como dnorm que calcula los valores de la densidad de probabilidad p(x) para un rango de valores de datos x, dados los parámetros de distribución requeridos (por ejemplo, la media y la desviación estándar para los datos gaussianos).
+
+2. una función de distribución acumulativa como pnorm que calcula la probabilidad acumulativa P (x) para esta distribución, dados los mismos parámetros.
+
+3. una función cuantil como qnorm que calcula los cuantiles de la distribución para un conjunto dado de probabilidades y los parámetros de distribución.
+
+4. un generador de números aleatorios como rnorm que genera muestras aleatorias de la distribución, dada la cantidad de muestras deseadas y los parámetros de distribución.
+
+Intervalos Confidenciales
+
+```{r }
+qnorm(p = 0.025, mean = 0, sd = 1)
+qnorm(p = 0.975, mean = 0, sd = 1)
+```
+
+Significado estadistico y valores P
+
+El concepto de significado estadístico está estrechamente relacionado con los intervalos de confianza, y los valores p son la medida numérica estándar de significado estadístico, quizás la forma más fácil de introducir el concepto de significado estadístico es mirar un ejemplo común donde surge.
+
+```{r }
+library(MASS)
+whiteModel <- lm(Gas ~ Temp * Insul, data = whiteside)
+summary(whiteModel)
+```
+
+
+Los resultados numéricos en la sección "Coeficientes" de este resumen incluyen los valores de los coeficientes mismos (la columna denominada "Estimación"), el error estándar, que es una estimación de la desviación estándar del valor del coeficiente, el valor t asociado, análogo a lo definido en la ecuación. Para la media, y un valor p discutido en detalle a continuación (la columna etiquetada "P r (> | t |)").
+
+Caracterizacion de variables binarias
+
+Las variables binarias son aquellas que solo pueden asumir uno de dos valores, como la variable Insul en el marco de datos en el lado blanco del paquete MASS que se discutió muchas veces en capítulos anteriores de este libro. Como se señaló en el Capítulo 5, incluso si estas variables son categóricas, como la variable Insul con los valores "Antes" y "Después", es muy sencillo volver a expresarlas como variables numéricas equivalentes con valores 0 y
+
+1. Esto significa que las variables binarias son en cierto sentido "intermedias" entre las variables categóricas y las variables numéricas (discretas) como los datos de recuento de valores enteros considerados. Por lo tanto, las variables binarias son susceptibles de caracterización por ambas técnicas, como las tablas de contingencia
+
+Proporciones impares
+
+Un caso particularmente importante sería
+valores faltantes que se asociaron fuertemente con la variable de diabetes. El odds ratio y su intervalo de confianza nos permiten examinar esta pregunta.
+La base para este examen es la siguiente función R, que calcula d y su intervalo de confianza en el nivel cLevel:
+el estimador de odds ratio.
+ORproc <- function(tbl, cLevel = 0.95){
+#
+n11 <- tbl[1,1]
+n12 <- tbl[1,2]
+n21 <- tbl[2,1]
+n22 <- tbl[2,2]
+#
+OR <- (n11/n12) * (n22/n21)
+#
+sigmaLog <- sqrt(1/n11 + 1/n12 + 1/n21 + 1/n22)
+alpha <- 1 - cLevel
+zalpha2 <- qnorm(1 - alpha/2)
+logOR <- log(OR)
+logLo <- logOR - zalpha2 * sigmaLog
+logHi <- logOR + zalpha2 * sigmaLog
+loCI <- exp(logLo)
+upCI <- exp(logHi)
+#
+outFrame <- data.frame(OR = OR, confLevel = cLevel,
+loCI = loCI, upCI = upCI)
+return(outFrame)
+}
+
+```{r }
+
+#zeroInsulin <- as.numeric(PimaIndiansDiabetes$insulin == 0)
+#diabetic <- as.numeric(PimaIndiansDiabetes$diabetes == "pos")
+#cTable <- table(zeroInsulin, diabetic)
+#cTable
+
+```
+
+
+Caracterizacion de datos contables
+
+La distribucion de Poison DE la misma manera que la distribución gaussiana es la aproximación más popular aplicada a los datos de valor continuo, la distribución de Poisson es la distribución más utilizada para aproximar los datos de conteo. Esta distribución asigna una probabilidad P k a cada valor entero i = 0, 1, 2,. 
+
+Donde = 1 · 2 · · · i para i >= 1 y 0! = 1 por convención. Aquí, una constante positiva que representa el único parámetro que define la distribución de Poisson y determina todas las características de distribución. De hecho, tanto la media como la varianza de la distribución de 
+Limitaciones de la distribucion Gausiana
+
+El supuesto de distribución gaussiano es insostenible, incluida la
+siguientes tipos de datos numéricos:
+1. distribuciones de datos fuertemente asimétricas como las que se ven a menudo para las variables
+eso solo puede asumir valores positivos;
+2. variables que están restringidas a un rango acotado (por ejemplo, probabilidades o fracciones que deben estar entre 0 y 1);
+3. variables que exhiben "comportamiento de cola pesada" como el ruido del destello
+4. distribuciones de datos multimodales como los datos de erupción del géiser Old Faithful
+
+Algunas Alternativas
+
+Limitaciones gaussianas descritas allí:
+1. la distribución gamma, una distribución asimétrica apropiada para datos numéricos positivos;
+2. la distribución beta, una distribución extremadamente flexible apropiada para datos numéricos acotados;
+3. La distribución t de Student, una familia de distribuciones de datos simétricas.
+
+
+
+Productos momentos correlacionales
+
+El coeficiente de correlación producto-momento fue desarrollado por Karl Pearson a fines del siglo XIX, y por esa razón a veces se le llama coeficiente de correlación de Pearson. 
+Esta medida sigue siendo extremadamente popular más de un siglo después porque tiene una serie de características extremadamente útiles, incluidas las tres siguientes:
+
+1. facilidad de cálculo: esta medida se programa fácilmente en cualquier lenguaje que admita operaciones aritméticas básicas y está disponible como una función incorporada en cualquier entorno de software que admita cálculos estadísticos básicos, incluidos Microsoft Excel, R, Python y muchos otros.
+
+2. facilidad de interpretación: el coeficiente de correlación producto-momento es una medida de asociación lineal, que cuantifica la tendencia de una variable a variar linealmente.
+
+3. Completitud para datos Gaussianos conjuntos: si dos variables, x e y, tienen una distribución Gaussiana conjunta (un concepto discutido brevemente a continuación), se caracterizan por completo por sus medias individuales y desviaciones estándar y su coeficiente de correlación momento-producto.
+
+
+```{r }
+library(MASS)
+
+cor(whiteside$Temp, whiteside$Gas)
+whitesideLinearModel <- lm(Gas ~ Temp, data = whiteside)
+coef(whitesideLinearModel)
+```
+
+Principales componenetes del Analysis PCA
+
+El análisis de componentes principales (PCA) es un método de análisis para conjuntos de datos numéricos multivariados que busca definir nuevas variables llamadas proyecciones o componentes principales que son combinaciones lineales de las variables originales, satisfaciendo las siguientes dos restricciones:
+1. Cada componente principal no está correlacionado con todos los demás;
+2. La varianza del componente principal es lo más grande posible, sujeta a la primera restricción.
+
+```{r }
+str(crabs)
+prinComp <- prcomp(crabs[, 4:8], center = TRUE, scale = TRUE)
+summary(prinComp)
+pcaDF <- as.data.frame(prinComp$x)
+plot(pcaDF)
+sex <- crabs$sex
+sp <- crabs$sp
+crabTypeMB <- as.numeric((sex == "M") & (sp == "B"))
+crabTypeFO <- as.numeric((sex == "F") & (sp == "O"))
+crabTypeMO <- as.numeric((sex == "M") & (sp == "O"))
+dummyDF <- data.frame(crabTypeMB = crabTypeMB,
+crabTypeFO = crabTypeFO,
+crabTypeMO = crabTypeMO)
+cor(dummyDF)
+crabs2 <- crabs[, 4:8]
+crabs2 <- cbind.data.frame(crabs2, dummyDF)
+prinComp2 <- prcomp(crabs2, center = TRUE, scale = TRUE)
+```
+
+Trabajando con variables de tiempo
+
+Base R admite una clase de objeto Date, junto con una serie de herramientas útiles para trabajar con estos objetos. Como un simple ejemplo, considere:
+
+```{r }
+dayInYear <- seq(1, 365, 1)
+dates <- as.Date("2017-01-01") + dayInYear - 1
+dates[1:10]
+dates[360:365]
+as.Date("2017-05-23") - as.Date("2017-02-19")
+min(dates)
+max(dates)
+median(dates)
+scheduleFrame <- data.frame(dayInYear = dayInYear, date = dates)
+scheduleFrame$dayOfWeek <- weekdays(scheduleFrame$date)
+scheduleFrame$month <- months(scheduleFrame$date)
+scheduleFrame$quarter <- quarters(scheduleFrame$date)
+str(scheduleFrame)
+write.csv(scheduleFrame, "scheduleFrame.csv", row.names = FALSE)
+scheduleFrame2 <- read.csv("scheduleFrame.csv")
+str(scheduleFrame2, vec.len = 2)
+```

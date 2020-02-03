@@ -1,0 +1,55 @@
+---
+title: "Capitulo 8"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+Programando en R
+
+Los números de Fibonacci son quizás la más conocida de todas las secuencias numéricas,
+presentado en libros y películas populares y definido por la relación de recursión:
+F i = F i − 1 + F i − 2,
+
+para i = 3,. . . , n, e inicializado por F 1 = F 2 = 1. Los primeros 10 elementos son:
+1, 1, 2, 3, 5, 8, 13, 21, 34, 55
+
+
+```{r}
+#Fib1 <- 1
+#Fib2 <- 1
+#Fib3 <- Fib2 + Fib1
+#Fib4 <- Fib3 + Fib2
+#Fib5 <- Fib4 + Fib3
+```
+Fuerza  bruta
+Dado que R proporciona capacidades aritméticas básicas, las más simples, y las menos útiles, el enfoque para calcular los números de Fibonacci sería utilizar R para implementar los cálculos de la fuerza bruta. Por ejemplo, la siguiente secuencia de pasos
+calcula los primeros cinco números de Fibonacci:
+
+
+```{r}
+#Fib1 <- vector("numeric", length = 5)
+#Fib2 <- 1
+#Fib3 <- 1
+#Fib4 <- Fib[2] + Fib[1]
+#Fib5 <- Fib[3] + Fib[2]
+#Fib5 <- Fib[4] + Fib[3]
+```
+
+Vale la pena enfatizar que este ejemplo no es más un programa real que el anterior, aunque la introducción del vector Fib es un paso en la dirección correcta, formando la base para el siguiente ejemplo.
+
+Usando bucles: un primer programa real
+
+Las estructuras de control representan un componente importante de cualquier lenguaje de programación, uno de los más simples de
+Estas estructuras de control son el bucle for utilizado aquí:
+
+```{r}
+#n <- 30
+#Fib <- vector("numeric", length = n)
+#Fib[1] <- 1
+#Fib[2] <- 1
+#for (i in 3:n){
+#Fib[i] <- Fib[i-1] + Fib[i-2]
+#}
+```

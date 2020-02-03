@@ -1,0 +1,261 @@
+---
+title: "Capitulo 8"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Los pasos basicos del analisis de textos de datos
+
+A un nivel muy alto, el análisis de datos de texto consta de los siguientes pasos:
+1. Obtenga el texto para analizar;
+2. Normalice el texto, eliminando detalles irrelevantes, por ejemplo:
+2a. Eliminar efectos de mayúsculas y minúsculas: convierte todo el texto a minúsculas o mayúsculas;
+2b. Eliminar caracteres molestos: puntuación, símbolos y números;
+2c. Analiza el texto en palabras;
+2d. Eliminar palabras no informativas;
+2e. Deje el texto, eliminando las terminaciones de palabras como "ing", "s" o "ed";
+3. Convierta el texto normalizado en números;
+4. Aplicar herramientas de análisis de datos matemáticos a estos números;
+5. Interprete estos resultados de análisis en términos de los datos del texto original.
+
+
+```{r}
+cv <- c("This vector is a character vector.",
+"It has three elements.",
+"Each element is a text string.")
+```
+
+Funciones basicas de char en R
+
+La funcion n char
+La función nchar cuenta el número de caracteres en una cadena de caracteres o un vector de cadenas de caracteres.
+
+```{r}
+#firstNames <- as.character(unclaimedFrame$First.Name)
+#firstNames[1:20]
+```
+
+La funcion grep
+
+La función grep nos permite buscar la presencia de una subcadena en un vector de caracteres especificado. Específicamente, dada una subcadena subStr y un vector de caracteres charVec, la llamada grep (subStr, charVec) devuelve una lista de los elementos de charVec que contienen subStr una o más veces.
+
+```{r}
+#index <- grep("O", firstNames[1:10])
+#index
+```
+
+Funciones Sub y gsub 
+
+Las funciones sub y gsub realizan sustituciones de cadenas, que difieren en que sub reemplaza la primera aparición solo de la subcadena objetivo, mientras que gsub reemplaza todas las ocurrencias. Ambas funciones tienen los mismos tres argumentos requeridos, que aparecen en el mismo orden:
+1. patrón es la subcadena a ser reemplazada;
+2. reemplazo es el texto de reemplazo para el patrón;
+3. x es el vector de caracteres donde se va a reemplazar el patrón.
+
+```{r}
+x <- "google search on oolong and oobleck associates"
+sub(pattern = "o", replacement = "X", x)
+gsub(pattern = "o", replacement = "X", x)
+```
+
+La funcion strsplit
+
+La función strsplit divide cada elemento de un vector de caracteres alrededor de una subcadena especificada. Los argumentos requeridos para esta función son:
+
+1. x, el vector de caracteres que se dividirá;
+2. split, la subcadena en la que se deben dividir los elementos de x.
+
+Dado que x es un vector de caracteres y cada elemento de este vector se divide en subcadenas separadas por división, el número de estas subcadenas en cada división no se puede determinar de antemano, por lo que esta función devuelve un objeto de lista en lugar de un vector, con cada elemento de lista que contiene todos los componentes divididos del elemento correspondiente de x. 
+
+Al igual que con las funciones grep, sub y gsub, la división del argumento se trata como una expresión regular a menos que el argumento opcional fijo se establezca en TRUE. Los siguientes ejemplos ilustran cómo funciona la función strsplit:
+
+
+```{r}
+x <- c("a comma b comma c", "a, b, c", "a comma (,) b comma (,) c")
+strsplit(x, split = ",")
+```
+
+Otra aplicacion ConvertAutoMpgRecords
+
+autoMpg del Depósito de aprendizaje automático UCI, descargado como un archivo de texto con registros de ancho fijo que contienen campos numéricos separados por espacios y un campo de texto con comillas incrustadas, separadas por un carácter de tabulación.La función R personalizada ConvertAutoMpgRecords se desarrolló para extraer los datos de estos campos y guardarlos en un marco de datos con el siguiente formato
+
+```{r}
+#head(autoMpgFrame, n = 3)
+```
+
+La funcion paste
+
+La función pegar combina cadenas de texto más cortas en cadenas más largas, y se ha utilizado en ejemplos presentados en capítulos anteriores. En aplicaciones típicas, esta función se llama con una colección de objetos R, cada uno de los cuales es una cadena de caracteres o se convierte en uno, y estos componentes se concatenan en una cadena de texto más larga. El siguiente ejemplo ilustra este comportamiento básico:
+```{r}
+n <- 4
+textString <- paste("The value of pi to", n, "digits is", round(pi, digits = n))
+textString
+```
+
+
+```{r}
+n <- 4
+textString <- paste("The value of pi to", n, "digits is", round(pi, digits = n),
+sep = ";")
+textString
+```
+
+
+```{r}
+paste(c("A", "B"), seq(1, 10, 1), c("x", "y", "z"), sep = ":")
+```
+
+```{r}
+str1 <- "mtcars variables:"
+str2 <- paste(colnames(mtcars), collapse = ", ")
+paste(str1, str2)
+```
+
+
+Expresiones Regulares Basicas
+
+Esta función acepta varios argumentos opcionales para restringir nuestra búsqueda, lo que puede ser útil si tenemos muchos archivos.
+Uno de estos argumentos es el patrón, que especifica coincidencias parciales en los nombres de archivo y se interpreta como una expresión regular. Las siguientes especificaciones recuperan los archivos indicados, si los hay, de nuestro directorio de trabajo:
+
+1. list.files (pattern = "R") enumera los nombres de archivo que contienen la letra R.
+2. list.files (pattern = "R $") enumera los nombres de archivo que terminan con la letra R.
+3. list.files (pattern = ".R") enumera los nombres de archivo que contienen la letra R.
+precedido por cualquier otra cosa (es decir, no al principio del nombre del archivo).
+4. list.files (pattern = "R.") enumera los nombres de archivo que contienen la letra R.
+seguido de cualquier otra cosa (es decir, no al final del nombre del archivo).
+
+
+```{r}
+x <- c("This is a vector of text strings",
+"The first contains no period, but the second one does.",
+"The third contains ...", "The fourth is like the first")
+grep(".", x, value = TRUE)
+grep(".", x, value = TRUE, fixed = TRUE)
+x <- "One string ... with both embedded ellipses (...) ... and a final period."
+gsub(".", "", x)
+x <- "One string ... with both embedded ellipses (...) ... and a final period."
+gsub(".", "", x, fixed = TRUE)
+```
+
+```{r}
+x <- "One string ... with both embedded ellipses (...) ... and a final period."
+gsub(".", "", x)
+x <- "One string ... with both embedded ellipses (...) ... and a final period."
+gsub(".", "", x, fixed = TRUE)
+```
+
+Porque las expresiones regulares son extremadamente poderosas y algo contradictorias (al menos hasta que tenga una experiencia sustancial con ellas).
+
+Es importante recordar que las expresiones regulares son pequeñas lenguaje informático propio y debe desarrollarse con solo tanta disciplina y cuidado como aplicamos para escribir cualquier computadora código. 
+
+En particular, se debe construir una expresión regular compleja en piezas más pequeñas para comprender cómo cada componente de la expresión regular funciona antes de agregar más componentes.
+
+Char set
+Los corchetes en una expresión regular, es decir, un corchete de apertura ("["), seguido de un montón de texto, seguido de un corchete de cierre ("]"), definen un conjunto de caracteres que se puede utilizar para que coincida con cualquier carácter en el conjunto. Como ejemplo simple, el siguiente código reemplaza todas las vocales en una cadena de texto con un guión bajo ("_"):
+```{r}
+x <- "This text string is a typical example, not very interesting."
+gsub("[aeiouy]", "_", x)
+x <- "A note from Benny Thornton about Eddie Coyle, 32."
+gsub("[a-z]", "_", x)
+gsub("[0-9]", "_", x)
+gsub("[A-L]", "_", x)
+x <- "A note from Benny Thornton about Eddie Coyle, 32."
+gsub("[^a-z]", "_", x)
+gsub("[^0-9]", "_", x)
+gsub("[^A-L]", "_", x)
+
+```
+En el primer ejemplo, la expresión regular "[^ a-z]" en la función gsub significa "reemplazar cualquier carácter excepto las letras minúsculas con un guión bajo". 
+Por lo tanto, las letras mayúsculas, espacios, signos de puntuación y números se reemplazan con guiones bajos, pero ninguna de las letras minúsculas son.
+
+En el segundo ejemplo, todo excepto los dígitos del 0 al 9 se reemplaza con un guión bajo, y en el ejemplo final, todo excepto las letras mayúsculas A a L se reemplaza con un guión bajo.
+
+Repeticion de MetaCracteres
+Los metacaracteres “?”, “*” y“+” en una expresión regular causan diferentes grados de repetición, y pueden ser particularmente útiles junto con los conjuntos de caracteres definidos al abrir y cerrar corchetes. Estos metacaracteres provocan el siguiente comportamiento de coincidencia de subpatrón:
+
+el metacarácter "?" Coincide con cero o exactamente una vez;
+el metacarácter "*" coincide con cero o más veces;
+el metacarácter "+" coincide una o más veces.
+
+```{r}
+x <- "This is a text string; it is...it is."
+gsub("is[.]", "_", x)
+gsub("is[.]?", "_", x)
+gsub("is[.]*", "_", x)
+gsub("is[.]+", "_", x)
+```
+
+ASCII vs UNICOIDE
+
+Una función útil disponible en el paquete de herramientas es showNonASCII, que se puede aplicar a un vector de caracteres para encontrar cualquier carácter que no sea ASCII. Al aplicar esta función al vector de caracteres de la cuenta bancaria no reclamada, unclaimedLines revela que los primeros 60 caracteres del elemento 4528 de este vector contienen texto no ASCII:
+
+```{r}
+#library(tools)
+#x <- unclaimedLines[4528]
+#y <- substr(x, 1, 60)
+#showNonASCII(y)
+
+```
+
+Ejemplo Caracterizacion de un Libro
+
+
+```{r}
+BornAgain <- readLines("LawsonBornAgain.txt")
+head(BornAgain)
+firstLine <- grep("CHAPTER I$", BornAgain)
+lastLine <- grep("(THE END.)", BornAgain, fixed = TRUE)
+LawsonText <- BornAgain[firstLine:lastLine]
+```
+
+
+El resultado es un vector de caracteres con 6195 elementos y un examen más detallado.
+muestra que el texto completo puede dividirse en estas partes:
+1. Un preámbulo del Proyecto Gutenberg, identificando la fuente y el documento;
+2. Una breve sección de Lawson llamada "DEDICACIÓN";
+3. El cuerpo principal del texto consta de 33 secciones, cada una etiquetada con el
+palabra "CAPÍTULO", seguido de una sección final llamada "EPÍLOGO";
+4. Una sección de comentarios breves de Lawson llamada "STRAY SHOTS";
+
+```{r}
+firstLine <- grep("CHAPTER I$", BornAgain)
+lastLine <- grep("(THE END.)", BornAgain, fixed = TRUE)
+LawsonText <- BornAgain[firstLine:lastLine]
+head(LawsonText)
+tail(LawsonText)
+CHindex <- grep("CHAPTER", LawsonText)
+EPindex <- grep("EPILOGUE", LawsonText)
+ENDindex <- grep("(THE END.)", LawsonText, fixed = TRUE)
+
+
+```
+
+El cpu dataframe
+
+```{r}
+library(MASS)
+head(cpus)
+cpusModelA <- lm(I(log(perf)) ~ I(log(syct)), data = cpus)
+summary(cpusModelA)
+cpusModelB <- lm(I(log(perf)) ~ I(log(syct)) + mmax + cach, data = cpus)
+summary(cpusModelB)
+cpuNames <- as.character(cpus$name)
+cpuNames[1:5]
+cpuNameSplits <- strsplit(cpuNames, split = " ")
+getFirst <- function(x){x[1]}
+firstTerms <- unlist(lapply(cpuNameSplits, getFirst))
+table(firstTerms)
+cpusPlus <- cpus
+cpusPlus$mfgr <- firstTerms
+cpusModelC <- lm(I(log(perf)) ~ I(log(syct)) + mfgr, data = cpusPlus)
+summary(cpusModelC)
+cpusModelD <- lm(I(log(perf)) ~ I(log(syct)) + mmax + cach + mfgr,
+data = cpusPlus)
+summary(cpusModelD)
+```
+
+
